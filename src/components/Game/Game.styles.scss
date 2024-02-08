@@ -1,0 +1,40 @@
+#game {
+  #question {
+    padding-top: 2em;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+  #question-number {
+    width: max-content;
+    padding: 1em 2em;
+    background-color: rgba(179, 137, 235, 0.212);
+    margin: auto;
+    font-size: 1.3em;
+  }
+}
+
+button:disabled {
+  pointer-events: none;
+  opacity: 0.2;
+}
+
+.win,
+.lose {
+  animation: changeColor 2s;
+}
+
+.win {
+  --color: blue;
+}
+.lose {
+  --color: red;
+}
+
+@keyframes changeColor {
+  20%,
+  60% {
+    background-color: var(--color);
+  }
+}

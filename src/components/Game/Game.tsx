@@ -6,7 +6,7 @@ import {
 } from "../../Contexts/App.context";
 import "./Game.styles.scss";
 import { Flex } from "../../UI/Flex";
-import { getRandomInArray } from "../../utils/shuffle";
+import { getRandomInArray, shuffle } from "../../utils/shuffle";
 function printQuestionInLanguag(language: TLanguage) {
   if (language == "fr") return "trouve l'équivalent de";
   return "find the equivalent of";
@@ -22,10 +22,12 @@ export function Game() {
   const [questions, setQuestions] = useState<string[]>(numbersMap.arab);
   const [question, setQuestion] = useState("");
   const [suggestions, setSuggestions] = useState(
-    numbersMap.roman.map((number: string) => ({
-      value: number,
-      disabled: false,
-    }))
+    shuffle(
+      numbersMap.roman.map((number: string) => ({
+        value: number,
+        disabled: false,
+      }))
+    )
   );
   useEffect(() => {
     const r = getRandomInArray(questions);
@@ -63,27 +65,39 @@ export function Game() {
         return newArr;
       });
 
-      setSuggestions((suggestions) =>
-        suggestions.map((suggestion) => ({ ...suggestion, disabled: false }))
-      );
+      setSuggestions((suggestions) => {
+        const resetSuggestions = suggestions.map((suggestion) => ({
+          ...suggestion,
+          disabled: false,
+        }));
+
+        return shuffle(resetSuggestions);
+      });
     }
   };
   return (
     <Flex isColumn id="game">
       <Flex isColumn>
         <p id="question">{printQuestionInLanguag(language)}</p>
-        <p
-          id="question-number"
-          className={`${isCorrect ? "win" : ""}  ${
-            isCorrect === false ? "lose" : ""
-          }`}
-        >
-          {question as string}
-        </p>
+        <p id="question-number">{question as string}</p>
       </Flex>
 
       <Flex id="suggestoins-wrapper" isColumn>
-        <Flex id="suggestions" justifyContent="center" doWrap>
+        <Flex
+          id="suggestions"
+          justifyContent="center"
+          doWrap
+          style={{ padding: "1em" }}
+          gap="2em"
+          // className={`${isCorrect ? "win" : ""}  ${
+          // isCorrect === false ? "lose" : ""
+          // }`}
+          className={(() => {
+            if (isCorrect === null) return;
+            if (isCorrect) return "win"; //true
+            else return "lose"; //False
+          })()}
+        >
           {suggestions.map(({ value, disabled }) => {
             return (
               <button
@@ -96,12 +110,6 @@ export function Game() {
             );
           })}
         </Flex>
-
-        <button>
-          {language == "en"
-            ? "Shuffle suggestions"
-            : "aléatoire les suggestions"}
-        </button>
       </Flex>
     </Flex>
   );

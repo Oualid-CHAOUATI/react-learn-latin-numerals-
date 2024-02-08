@@ -7,17 +7,17 @@ export function getRandomInt(maxNumber: number) {
   return Math.floor(Math.random() * (maxNumber + 1));
 }
 
-export function getRandomInArray(array: unknown[]) {
+export function getRandomInArray<T>(array: T[]) {
   return array[getRandomInt(array.length - 1)];
 }
-export function shuffle(array: unknown[]) {
+export function shuffle<T>(array: T[]) {
   const shuffledArraay = [...array];
   for (let i = 0; i < array.length; i++) {
-    const j = getRandomInt(array.length);
+    const j = getRandomInt(array.length - 1);
     [shuffledArraay[i], shuffledArraay[j]] = [
       shuffledArraay[j],
       shuffledArraay[i],
     ];
   }
-  return array;
+  return shuffledArraay;
 }

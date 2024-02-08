@@ -35,11 +35,12 @@ export const Flex = <T extends ElementType>({
     gap,
     justifyContent,
     alignItems,
+    ...otherProps,
   };
 
   const Elem = As || "div";
   return (
-    <Elem style={{ ...otherProps.style, ...style }} {...otherProps}>
+    <Elem {...otherProps} style={{ ...otherProps.style, ...style }}>
       {children}
     </Elem>
   );

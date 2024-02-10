@@ -9,6 +9,7 @@ import { Flex } from "../../UI/Flex";
 import { ProgessBar } from "../../UI/ProgessBar/ProgessBar";
 import { useGameHook } from "../../hooks/gameHook";
 import { GameContext, TGameContext } from "../../Contexts/gameContext";
+import { TranslateText } from "../../utils/translate";
 function printQuestionInLanguag(language: TLanguage) {
   if (language == "fr") return "trouve l'équivalent de";
   return "find the equivalent of";
@@ -16,6 +17,7 @@ function printQuestionInLanguag(language: TLanguage) {
 
 export function Game() {
   const { language } = useContext(LanguageContext) as TLanguageContext;
+  const translate = TranslateText(language);
   const { gameMode } = useContext(GameContext) as TGameContext;
   const {
     currentQuestion,
@@ -40,16 +42,15 @@ export function Game() {
             {totalQuestionsNumber - leftQuestionsNumber}/{totalQuestionsNumber}
           </span>{" "}
         </p>
-        <p>Total tries</p>
+        <p>{translate("Total essais ", "Total tries ")}</p>
         <p>
           <span>{tries}</span>{" "}
         </p>
       </div>
 
       <button id="reset-btn" onClick={reset}>
-        {language == "en" ? "Reset / Replay" : "Réinitialiser / Rejouer"}
+        {translate("Reset / Replay", "Réinitialiser / Rejouer")}
       </button>
-      {percentage == 100 && <button onClick={reset}>reset game</button>}
       {percentage !== 100 && (
         <>
           <Flex isColumn>

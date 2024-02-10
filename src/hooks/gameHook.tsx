@@ -9,10 +9,10 @@ export const arabNumbers = arabNumbersString.split(" ");
 export const romanNumbers = romanNumbersString.split(" ");
 
 const frenchDaysString = "lundi mardi mercredi jeudi vendredi samedi dimanche";
-const frenchDaysArray = frenchDaysString.split(" ");
+export const frenchDaysArray = frenchDaysString.split(" ");
 const englishDaysString =
   "Monday Tuesday Wednesday Thursday Friday Saturday Sunday";
-const englishDaysArray = englishDaysString.split(" ");
+export const englishDaysArray = englishDaysString.split(" ");
 
 const checkIfNumbersMatch = ({
   arab,

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import {
   LanguageContext,
   TLanguage,
@@ -6,80 +6,33 @@ import {
 } from "../../Contexts/App.context";
 import "./Game.styles.scss";
 import { Flex } from "../../UI/Flex";
-import { getRandomInArray, shuffle } from "../../utils/shuffle";
+import { useGameHook } from "../../assets/hooks/gameHook";
+import { ProgessBar } from "../../UI/ProgessBar/ProgessBar";
 function printQuestionInLanguag(language: TLanguage) {
   if (language == "fr") return "trouve l'équivalent de";
   return "find the equivalent of";
 }
-
 export function Game() {
-  const { language, numbersMap } = useContext(
-    LanguageContext
-  ) as TLanguageContext;
+  const { language } = useContext(LanguageContext) as TLanguageContext;
+  const {
+    currentQuestion,
+    suggestions,
+    isCorrect,
+    handleResponse,
+    percentage,
+    reset,
+  } = useGameHook();
 
-  const [isCorrect, setIsCorrrect] = useState<boolean | null>(null);
-
-  const [questions, setQuestions] = useState<string[]>(numbersMap.arab);
-  const [question, setQuestion] = useState("");
-  const [suggestions, setSuggestions] = useState(
-    shuffle(
-      numbersMap.roman.map((number: string) => ({
-        value: number,
-        disabled: false,
-      }))
-    )
-  );
-  useEffect(() => {
-    const r = getRandomInArray(questions);
-
-    console.log(r);
-    console.log(questions);
-    setQuestion(r as string);
-  }, [questions]);
-
-  const handleResponse = (response: string) => {
-    const responseIndex = numbersMap.roman.indexOf(response);
-    const questionIndex = numbersMap.arab.indexOf(question as string);
-
-    const isCorrectAnswer = responseIndex === questionIndex;
-    setIsCorrrect(isCorrectAnswer);
-
-    setTimeout(() => {
-      setIsCorrrect(null);
-    }, 500);
-
-    if (!isCorrectAnswer) {
-      setSuggestions((suggestions) =>
-        suggestions.map((suggestion) => {
-          if (suggestion.value == response) {
-            return { ...suggestion, disabled: true };
-          }
-
-          return suggestion;
-        })
-      );
-    } else {
-      setQuestions((questions) => {
-        const newArr = [...questions];
-        newArr.splice(questions.indexOf(question as string), 1);
-        return newArr;
-      });
-
-      setSuggestions((suggestions) => {
-        const resetSuggestions = suggestions.map((suggestion) => ({
-          ...suggestion,
-          disabled: false,
-        }));
-
-        return shuffle(resetSuggestions);
-      });
-    }
-  };
   return (
     <Flex isColumn id="game">
+      <div>
+        <ProgessBar percentage={percentage} progessColor="blue" />
+      </div>
+
+      {percentage == 100 && <button onClick={reset}>reset game</button>}
       <Flex isColumn>
-        <p id="question">{printQuestionInLanguag(language)}</p>
-        <p id="question-number">{question as string}</p>
+        <h2 id="question">{printQuestionInLanguag(language)}</h2>
+        <p id="question-number">{currentQuestion}</p>
       </Flex>
 
       <Flex id="suggestoins-wrapper" isColumn>

@@ -9,7 +9,7 @@ export function BG() {
         inset: 0,
         pointerEvents: "none",
         zIndex: "-1",
-        opacity: 0.4,
+        opacity: 0.1,
       }}
     >
       <defs>

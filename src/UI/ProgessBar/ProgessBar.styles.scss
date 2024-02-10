@@ -1,0 +1,20 @@
+.progress-bar {
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+
+  $circleSize: 80%;
+  width: var(--size, 100px);
+  height: var(--size, 100px);
+  color: var(--textColor, currentColor);
+  font-size: var(--fontSize, 1em);
+  background: radial-gradient(
+      closest-side,
+      var(--bgColor, white) #{$circleSize - 2},
+      transparent $circleSize 100%
+    ),
+    conic-gradient(
+      var(--progessColor, red) var(--percentage, 100%),
+      transparent 0
+    );
+}

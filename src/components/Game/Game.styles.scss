@@ -22,7 +22,7 @@ button:disabled {
 
 .win,
 .lose {
-  animation: changeColor 2s;
+  background-color: var(--color);
 }
 
 .win {
@@ -31,10 +31,14 @@ button:disabled {
 .lose {
   --color: red;
 }
-
-@keyframes changeColor {
-  20%,
-  60% {
-    background-color: var(--color);
+#suggestoins-wrapper {
+  button {
+    letter-spacing: 0.1em;
+    font-size: 1.3em;
+    outline: 0 solid white;
+    transition: 200ms;
+    &:focus {
+      outline: 0.2em solid white;
+    }
   }
 }

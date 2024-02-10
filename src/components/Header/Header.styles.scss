@@ -4,9 +4,12 @@ header {
   #cheat-btn {
     position: relative;
     z-index: 4;
+    background-color: red;
   }
 
   select {
     padding-inline: 0.8em;
+
+    border-radius: 0.4em;
   }
 }

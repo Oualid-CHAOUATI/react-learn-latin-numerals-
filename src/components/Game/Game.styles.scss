@@ -9,9 +9,12 @@
   #question-number {
     width: max-content;
     padding: 1em 2em;
-    background-color: rgba(179, 137, 235, 0.212);
+    --accent-colr: orange;
     margin: auto;
     font-size: 1.3em;
+    border-radius: 1em;
+    text-transform: uppercase;
+    border: 2px solid var(--accent-colr);
   }
 }
 
@@ -25,21 +28,17 @@ button:disabled {
   margin-inline: auto;
 }
 
-.win,
-.lose {
+#suggestions {
+  transition: 500ms;
   background-color: var(--color);
-}
-
-.win {
-  --color: blue;
-}
-.lose {
-  --color: red;
-}
-#suggestoins-wrapper {
+  &.win {
+    --color: blue;
+  }
+  &.lose {
+    --color: red;
+  }
   button {
     letter-spacing: 0.1em;
-    font-size: 1.3em;
     outline: 0 solid white;
     transition: 200ms;
     &:focus {

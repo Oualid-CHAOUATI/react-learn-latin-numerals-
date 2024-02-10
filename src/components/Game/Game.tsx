@@ -57,34 +57,29 @@ export function Game() {
             <p id="question-number">{currentQuestion}</p>
           </Flex>
 
-          <Flex id="suggestoins-wrapper" isColumn>
-            <Flex
-              id="suggestions"
-              justifyContent="center"
-              doWrap
-              style={{ padding: "1em" }}
-              gap="2em"
-              // className={`${isCorrect ? "win" : ""}  ${
-              // isCorrect === false ? "lose" : ""
-              // }`}
-              className={(() => {
-                if (isCorrect === null) return;
-                if (isCorrect) return "win"; //true
-                else return "lose"; //False
-              })()}
-            >
-              {suggestions.map(({ value, disabled }) => {
-                return (
-                  <button
-                    key={value}
-                    disabled={disabled}
-                    onClick={() => handleResponse(value)}
-                  >
-                    {value}
-                  </button>
-                );
-              })}
-            </Flex>
+          <Flex
+            id="suggestions"
+            justifyContent="center"
+            doWrap
+            style={{ padding: "1em" }}
+            gap="2em"
+            className={(() => {
+              if (isCorrect === null) return;
+              if (isCorrect) return "win"; //true
+              else return "lose"; //False
+            })()}
+          >
+            {suggestions.map(({ value, disabled }) => {
+              return (
+                <button
+                  key={value}
+                  disabled={disabled}
+                  onClick={() => handleResponse(value)}
+                >
+                  {value}
+                </button>
+              );
+            })}
           </Flex>
         </>
       )}

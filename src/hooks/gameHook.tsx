@@ -62,15 +62,17 @@ export function useGameHook(gameMod: TGameMode) {
   const [suggestions, setSuggestions] = useState(
     shuffle(getCleanSuggestions(gameMod))
   );
+  const [tries, setTries] = useState(0);
 
   useEffect(() => {
     setQuestions(getSuffledQuestions(gameMod));
     setSuggestions(shuffle(getCleanSuggestions(gameMod)));
+    setTries(0);
   }, [gameMod]);
 
-  const restQuestionsNumber = questions.length;
+  const leftQuestionsNumber = questions.length;
   const percentage = Math.round(
-    100 - (100 * restQuestionsNumber) / totalQuestionsNumber
+    100 - (100 * leftQuestionsNumber) / totalQuestionsNumber
   );
 
   const currentQuestion = questions[0];
@@ -79,8 +81,11 @@ export function useGameHook(gameMod: TGameMode) {
   const reset = () => {
     setQuestions(getSuffledQuestions(gameMod));
     setSuggestions(shuffle(getCleanSuggestions(gameMod)));
+    setTries(0);
   };
   const handleResponse = (answer: string) => {
+    setTries((tries) => tries + 1);
+
     const isCorrectAnswer = checkIfMatch(gameMod, {
       question: currentQuestion,
       answer,
@@ -117,6 +122,10 @@ export function useGameHook(gameMod: TGameMode) {
     isCorrect,
     handleResponse,
     percentage,
+
     reset,
+    tries,
+    totalQuestionsNumber,
+    leftQuestionsNumber,
   };
 }

@@ -24,12 +24,26 @@ export function Game() {
     handleResponse,
     percentage,
     reset,
+    leftQuestionsNumber,
+    totalQuestionsNumber,
+    tries,
   } = useGameHook(gameMode);
 
   return (
     <Flex isColumn id="game">
       <div>
         <ProgessBar percentage={percentage} progessColor="blue" />
+      </div>
+      <div>
+        <p>
+          <span>
+            {totalQuestionsNumber - leftQuestionsNumber}/{totalQuestionsNumber}
+          </span>{" "}
+        </p>
+        <p>Total tries</p>
+        <p>
+          <span>{tries}</span>{" "}
+        </p>
       </div>
 
       {percentage == 100 && <button onClick={reset}>reset game</button>}

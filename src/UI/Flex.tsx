@@ -13,7 +13,7 @@ type TFlexProps<T extends ElementType> = {
   isColumn?: true;
   gap?: string;
   As?: T;
-  doWrap?: true;
+  dontWrap?: true;
   justifyContent?: TjustifyAndAlign;
   alignItems?: TjustifyAndAlign;
 } & ComponentPropsWithoutRef<T>;
@@ -23,7 +23,7 @@ export const Flex = <T extends ElementType>({
   isColumn,
   gap = "1em",
   As,
-  doWrap,
+  dontWrap,
   alignItems,
   justifyContent,
   ...otherProps
@@ -31,7 +31,7 @@ export const Flex = <T extends ElementType>({
   const style = {
     display: "flex",
     flexDirection: isColumn && "column",
-    flexWrap: doWrap && "wrap",
+    flexWrap: (dontWrap && "nowrap") || "wrap",
     gap,
     justifyContent,
     alignItems,

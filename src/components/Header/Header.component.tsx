@@ -5,8 +5,9 @@ import { Flex } from "../../UI/Flex";
 import { GameContext, TGameContext } from "../../Contexts/gameContext";
 import { TranslateText } from "../../utils/translate";
 export function Header() {
-  const { language, toggleLanguage, isOpenCheat, toggleIsOpenCheat } =
-    useContext(LanguageContext) as TLanguageContext;
+  const { language, toggleLanguage, toggleIsOpenCheat } = useContext(
+    LanguageContext
+  ) as TLanguageContext;
 
   const translate = TranslateText(language);
   const { toggleGameMode, gameMode } = useContext(GameContext) as TGameContext;

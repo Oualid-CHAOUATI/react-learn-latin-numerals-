@@ -14,8 +14,8 @@ export function Cheat() {
   const { isOpenCheat } = useContext(LanguageContext) as TLanguageContext;
 
   const { gameMode } = useContext(GameContext) as TGameContext;
-  const questionsArray = gameMode == "days" ? arabNumbers : frenchDaysArray;
-  const answersArray = gameMode == "days" ? romanNumbers : englishDaysArray;
+  const questionsArray = gameMode == "days" ? frenchDaysArray : arabNumbers;
+  const answersArray = gameMode == "days" ? englishDaysArray : romanNumbers;
   if (!isOpenCheat) return null;
   return (
     <div className="cheat">

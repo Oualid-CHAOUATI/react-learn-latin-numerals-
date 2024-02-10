@@ -27,7 +27,7 @@ export function Header() {
             value={gameMode}
           >
             <option value="days">days</option>
-            <option value="numbers">numbers</option>
+            <option value="en">en</option>
           </select>
 
           <button id="cheat-btn" onClick={toggleIsOpenCheat}>

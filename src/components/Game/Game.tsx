@@ -46,6 +46,9 @@ export function Game() {
         </p>
       </div>
 
+      <button id="reset-btn" onClick={reset}>
+        {language == "en" ? "Reset / Replay" : "Réinitialiser / Rejouer"}
+      </button>
       {percentage == 100 && <button onClick={reset}>reset game</button>}
       {percentage !== 100 && (
         <>

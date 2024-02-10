@@ -16,7 +16,7 @@ export const LanguageContext = React.createContext<TLanguageContext | null>(
 
 // type LanguageProviderProps=
 export const LanguagePovider = ({ children }: PropsWithChildren) => {
-  const [language, setLanguage] = useState<"fr" | "en">("fr");
+  const [language, setLanguage] = useState<TLanguage>("fr");
   const [isOpenCheat, setIsOpenCheat] = useState<boolean>(false);
 
   const toggleIsOpenCheat = () => setIsOpenCheat((isOpen) => !isOpen);

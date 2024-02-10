@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { LanguageContext, TLanguageContext } from "../../Contexts/App.context";
 import { Flex } from "../../UI/Flex";
 import "./Cheat.styles.scss";
-import { arabNumbers, romanNumbers } from "../../assets/hooks/gameHook";
+import { arabNumbers, romanNumbers } from "../../hooks/gameHook";
 
 export function Cheat() {
   const { isOpenCheat } = useContext(LanguageContext) as TLanguageContext;

@@ -16,7 +16,7 @@ export function ProgessBar({
   textColor = "#000",
   fontSize = "1.2em",
 }: TProgessBarProps) {
-  if (percentage) percentage = percentage + "%";
+  if (percentage !== undefined) percentage = percentage + "%";
   const style = { percentage, bgColor, progessColor, textColor, fontSize };
 
   const styleMap = Object.entries(style).map(([key, value]) => {

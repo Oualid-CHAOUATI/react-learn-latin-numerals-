@@ -30,16 +30,17 @@ const checkIfDaysMatch = ({
   english: string;
 }) => frenchDaysArray.indexOf(french) == englishDaysArray.indexOf(english);
 
-const checkIfMatch = (
+const _checkAnswer = (
   gameMode: TGameMode,
-  { question, answer }: { question: string; answer: string }
+  question: string,
+  answer: string
 ) => {
   if (gameMode == "days")
     return checkIfDaysMatch({ french: question, english: answer });
   else return checkIfNumbersMatch({ arab: question, roman: answer });
 };
 
-const getCleanSuggestions = (gameMode: TGameMode) => {
+const _getCleanSuggestions = (gameMode: TGameMode) => {
   let array = gameMode == "days" ? englishDaysArray : romanNumbers;
   return array.map((value: string) => ({
     value,
@@ -47,72 +48,82 @@ const getCleanSuggestions = (gameMode: TGameMode) => {
   }));
 };
 
-const getSuffledQuestions = (gameMode: TGameMode) => {
-  const array = gameMode == "days" ? frenchDaysArray : arabNumbers;
-
-  return shuffle(array);
-};
-
-const getQuestions = (gameMode: TGameMode) => {
+const _getQuestions = (gameMode: TGameMode) => {
   return gameMode == "days" ? frenchDaysArray : arabNumbers;
 };
+
+function getFunctions(gameMod: TGameMode) {
+  const getQuestions = () => _getQuestions(gameMod);
+  const getCleanSuggestions = () => _getCleanSuggestions(gameMod);
+  const checkAnswer = (question: string, answer: string) =>
+    _checkAnswer(gameMod, question, answer);
+
+  return { getQuestions, getCleanSuggestions, checkAnswer };
+}
+
 export function useGameHook(gameMod: TGameMode) {
-  const totalQuestionsNumber = getQuestions(gameMod).length;
-  const [questions, setQuestions] = useState(getSuffledQuestions(gameMod));
+  const { getQuestions, checkAnswer, getCleanSuggestions } =
+    getFunctions(gameMod);
+
+  const totalQuestionsNumber = _getQuestions(gameMod).length;
+  const [questions, setQuestions] = useState(shuffle(getQuestions()));
   const [suggestions, setSuggestions] = useState(
-    shuffle(getCleanSuggestions(gameMod))
+    shuffle(getCleanSuggestions())
   );
+
+  const disabledSuggestion = (answerSuggestion: string) => {
+    setSuggestions((suggestions) =>
+      suggestions.map((suggestion) => {
+        if (suggestion.value === answerSuggestion) {
+          return { ...suggestion, disabled: true };
+        }
+
+        return suggestion;
+      })
+    );
+  };
+  const removeFirstQuestion = () => {
+    setQuestions((questions) => {
+      const newQuestions = [...questions];
+      newQuestions.shift();
+      return newQuestions;
+    });
+  };
   const [tries, setTries] = useState(0);
-
-  useEffect(() => {
-    setQuestions(getSuffledQuestions(gameMod));
-    setSuggestions(shuffle(getCleanSuggestions(gameMod)));
-    setTries(0);
-  }, [gameMod]);
-
   const leftQuestionsNumber = questions.length;
   const percentage = Math.round(
     100 - (100 * leftQuestionsNumber) / totalQuestionsNumber
   );
 
   const currentQuestion = questions[0];
+  useEffect(() => {
+    setQuestions(shuffle(getQuestions()));
+    setSuggestions(shuffle(getCleanSuggestions()));
+    setTries(0);
+  }, [gameMod]);
 
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const reset = () => {
-    setQuestions(getSuffledQuestions(gameMod));
-    setSuggestions(shuffle(getCleanSuggestions(gameMod)));
+    setQuestions(shuffle(getQuestions()));
+    setSuggestions(shuffle(getCleanSuggestions()));
     setTries(0);
   };
   const handleResponse = (answer: string) => {
     setTries((tries) => tries + 1);
 
-    const isCorrectAnswer = checkIfMatch(gameMod, {
-      question: currentQuestion,
-      answer,
-    });
+    const isCorrectAnswer = checkAnswer(currentQuestion, answer);
 
     setIsCorrect(isCorrectAnswer);
     setTimeout(() => {
       setIsCorrect(null);
     }, 600);
+
     if (!isCorrectAnswer) {
-      setSuggestions((suggestions) =>
-        suggestions.map((suggestion) => {
-          if (suggestion.value === answer) {
-            return { ...suggestion, disabled: true };
-          }
-
-          return suggestion;
-        })
-      );
+      disabledSuggestion(answer);
     } else {
-      setQuestions((questions) => {
-        const newQuestions = [...questions];
-        newQuestions.shift();
-        return newQuestions;
-      });
+      removeFirstQuestion();
 
-      setSuggestions(shuffle(getCleanSuggestions(gameMod)));
+      setSuggestions(shuffle(getCleanSuggestions()));
     }
   };
 

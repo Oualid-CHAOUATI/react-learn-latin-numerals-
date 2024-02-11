@@ -49,7 +49,7 @@ export function Game() {
       </div>
 
       <button id="reset-btn" onClick={reset}>
-        {translate("Reset / Replay", "Réinitialiser / Rejouer")}
+        {translate("Réinitialiser / Rejouer", "Reset / Replay")}
       </button>
       {percentage !== 100 && (
         <>
